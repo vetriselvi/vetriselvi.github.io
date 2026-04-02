@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #18181f;
+      --border: rgba(255,255,255,0.07);
+      --border-accent: rgba(99,240,198,0.3);
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --accent: #63f0c6;
+      --accent2: #7c6af7;
+      --accent3: #f07663;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* GRID BG */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,240,198,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,240,198,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 7rem 2rem 4rem;
+    }
+
+    section:first-of-type { padding-top: 10rem; }
+
+    /* HERO */
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tag::before { content: '> '; }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+
+    .hero-accent { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTION LABELS */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text {
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .about-text strong { color: var(--text); }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      padding: 0.3rem 0.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .skills-heading {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-num {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tag {
+      font-size: 10px;
+      padding: 0.2rem 0.6rem;
+      background: rgba(124,106,247,0.1);
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 3px;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .project-link {
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .project-link:hover { border-color: var(--accent); }
+
+    /* RESUME */
+    .resume-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .resume-info h3 {
+      font-family: var(--sans);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .resume-info p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .resume-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    /* EXPERIENCE */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exp-date {
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+
+    .exp-role {
+      font-family: var(--sans);
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-company {
+      color: var(--accent);
+      font-size: 12px;
+      margin-bottom: 0.75rem;
+    }
+
+    .exp-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* CONTACT */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .contact-icon {
+      font-size: 18px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
+      border-radius: 6px;
+    }
+
+    .contact-label { font-size: 12px; color: var(--muted); }
+    .contact-val { font-size: 14px; margin-top: 2px; }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* CURSOR BLINK */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.35s; }
+    .delay-4 { animation-delay: 0.5s; }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .resume-box { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">YN<span style="color:var(--muted)">.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#resume">resume</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="home">
+    <p class="hero-tag fade-in">available for opportunities</p>
+    <h1 class="fade-in delay-1">
+      Your<br>
+      <span class="hero-accent">Name</span><span class="cursor"></span>
+    </h1>
+    <p class="hero-sub fade-in delay-2">
+      Software Engineer specializing in full-stack development,
+      cloud infrastructure, and building systems that scale.
+      Based in Kansas City, MO.
+    </p>
+    <div class="hero-ctas fade-in delay-3">
+      <a href="#projects" class="btn btn-primary">// view projects</a>
+      <a href="#contact" class="btn btn-ghost">get in touch →</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">01 // about me</p>
+    <div class="about-grid">
+      <div>
+        <p class="about-text">
+          Hi — I'm <strong>Your Name</strong>, a software engineer with X years of experience
+          building robust, scalable applications across the stack. I love clean code,
+          thoughtful architecture, and solving hard problems.
+        </p>
+        <br>
+        <p class="about-text">
+          When I'm not coding, you'll find me exploring new tech, working on
+          side projects, or taking my dog out for walks.
+        </p>
+        <br>
+        <p class="about-text">
+          I've built tools using <strong>Oracle Cloud Infrastructure</strong>,
+          <strong>AI/ML pipelines</strong>, and everything from frontend UIs
+          to backend APIs.
+        </p>
+      </div>
+      <div>
+        <p class="skills-heading">languages</p>
+        <div class="skills-list">
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">TypeScript</span>
+        </div>
+
+        <p class="skills-heading">frameworks & tools</p>
+        <div class="skills-list">
+          <span class="skill-tag">Spring Boot</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Git</span>
+        </div>
+
+        <p class="skills-heading">cloud & infra</p>
+        <div class="skills-list">
+          <span class="skill-tag">OCI</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Oracle 23ai</span>
+          <span class="skill-tag">OIC</span>
+          <span class="skill-tag">Kubernetes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">02 // experience</p>
+
+    <div class="exp-item">
+      <div class="exp-date">2022 — now</div>
+      <div>
+        <p class="exp-role">Senior Software Engineer</p>
+        <p class="exp-company">Company Name</p>
+        <p class="exp-desc">
+          Led development of cloud-native microservices on OCI.
+          Reduced latency by 40% through optimized query patterns and caching strategies.
+          Mentored junior engineers and established code review culture.
+        </p>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-date">2019 — 2022</div>
+      <div>
+        <p class="exp-role">Software Engineer</p>
+        <p class="exp-company">Previous Company</p>
+        <p class="exp-desc">
+          Built and maintained full-stack features for enterprise SaaS platform.
+          Integrated third-party APIs, improved test coverage from 40% to 85%.
+        </p>
+      </div>
+    </div>
+
+    <div class="exp-item" style="border-bottom:none;">
+      <div class="exp-date">2018 — 2019</div>
+      <div>
+        <p class="exp-role">Junior Developer</p>
+        <p class="exp-company">First Company</p>
+        <p class="exp-desc">
+          Developed internal tooling and automation scripts. Contributed to
+          frontend redesign that improved user engagement by 25%.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">03 // projects</p>
+    <div class="projects-grid">
+
+      <a href="#" class="project-card">
+        <p class="project-num">01</p>
+        <p class="project-title">AI Code Guardian</p>
+        <p class="project-desc">
+          Performance linter for code diffs + regression risk detector that
+          cross-references changes against Jira incident history using vector search.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">OCI GenAI</span>
+          <span class="project-tag">Oracle 23ai</span>
+          <span class="project-tag">Vector DB</span>
+          <span class="project-tag">OIC</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">github →</a>
+          <a href="#" class="project-link">live demo →</a>
+        </div>
+      </a>
+
+      <a href="#" class="project-card">
+        <p class="project-num">02</p>
+        <p class="project-title">Project Two</p>
+        <p class="project-desc">
+          A short description of what the project does, what problem it solves,
+          and who the intended users are. Keep it punchy.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Node.js</span>
+          <span class="project-tag">PostgreSQL</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">github →</a>
+          <a href="#" class="project-link">live demo →</a>
+        </div>
+      </a>
+
+      <a href="#" class="project-card">
+        <p class="project-num">03</p>
+        <p class="project-title">Project Three</p>
+        <p class="project-desc">
+          Another project. Describe the scope, tech stack, and impact.
+          Add a link to a live demo or GitHub repo below.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">FastAPI</span>
+          <span class="project-tag">Docker</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">github →</a>
+        </div>
+      </a>
+
+      <a href="#" class="project-card">
+        <p class="project-num">04</p>
+        <p class="project-title">Project Four</p>
+        <p class="project-desc">
+          Fourth project slot. Great for side projects, open source contributions,
+          or hackathon entries like Oracle Hacks.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Java</span>
+          <span class="project-tag">Spring Boot</span>
+          <span class="project-tag">AWS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">github →</a>
+          <a href="#" class="project-link">case study →</a>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section id="resume">
+    <p class="section-label">04 // resume</p>
+    <div class="resume-box">
+      <div class="resume-info">
+        <h3>Your Name — Resume</h3>
+        <p>Software Engineer · Last updated April 2026 · PDF format</p>
+      </div>
+      <div class="resume-actions">
+        <a href="resume.pdf" download class="btn btn-primary">⬇ download PDF</a>
+        <a href="resume.pdf" target="_blank" class="btn btn-ghost">view online →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">05 // contact</p>
+    <p style="color:var(--muted); margin-bottom:2rem; font-size:13px;">
+      Open to full-time roles, contract work, and interesting collaborations.
+    </p>
+    <div class="contact-grid">
+      <a href="mailto:you@email.com" class="contact-link">
+        <div class="contact-icon">✉</div>
+        <div>
+          <p class="contact-label">email</p>
+          <p class="contact-val">you@email.com</p>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/yourhandle" target="_blank" class="contact-link">
+        <div class="contact-icon">in</div>
+        <div>
+          <p class="contact-label">linkedin</p>
+          <p class="contact-val">/in/yourhandle</p>
+        </div>
+      </a>
+      <a href="https://github.com/yourhandle" target="_blank" class="contact-link">
+        <div class="contact-icon">&lt;/&gt;</div>
+        <div>
+          <p class="contact-label">github</p>
+          <p class="contact-val">github.com/yourhandle</p>
+        </div>
+      </a>
+      <a href="https://twitter.com/yourhandle" target="_blank" class="contact-link">
+        <div class="contact-icon">𝕏</div>
+        <div>
+          <p class="contact-label">twitter / x</p>
+          <p class="contact-val">@yourhandle</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    built by <span>your name</span> · designed with intention · <span>2026</span>
+  </footer>
+
+</body>
+</html>
